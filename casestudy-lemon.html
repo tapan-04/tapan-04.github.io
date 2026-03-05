@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Little Lemon — Case Study · Tapan Damisetty</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0d0c0a;--gold:#c8a96e;--cream:#f5efe0;
+  --muted:#6a6456;--border:rgba(200,169,110,0.18);
+  --surface:#141210;--surface2:#1c1a16;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--cream);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;cursor:none;}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:8000;}
+::-webkit-scrollbar{width:2px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--gold)}
+.cur{position:fixed;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:difference;transition:transform .15s}
+.cur-ring{position:fixed;width:34px;height:34px;border:1px solid rgba(200,169,110,.55);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%)}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content:space-between;align-items:center;padding:24px 48px;backdrop-filter:blur(20px);background:rgba(13,12,10,.8);border-bottom:1px solid var(--border);}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:3px;color:var(--gold);text-decoration:none;}
+.nav-back{font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:8px;transition:color .2s;}
+.nav-back:hover{color:var(--gold)}
+.nav-back::before{content:'←'}
+
+/* HERO */
+.cs-hero{min-height:80vh;display:flex;flex-direction:column;justify-content:flex-end;padding:120px 48px 80px;position:relative;overflow:hidden;border-bottom:1px solid var(--border);}
+.cs-hero-bg{position:absolute;bottom:-80px;left:-20px;font-family:'Bebas Neue',sans-serif;font-size:35vw;line-height:.82;color:rgba(200,169,110,.03);pointer-events:none;user-select:none;white-space:nowrap;}
+.cs-tag{font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.cs-tag::before{content:'';width:28px;height:1px;background:var(--gold)}
+.cs-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(6rem,12vw,14rem);line-height:.88;letter-spacing:-2px;color:var(--cream);position:relative;z-index:1;}
+.cs-title em{color:var(--gold);font-style:normal}
+.cs-subtitle{font-family:'Instrument Serif',serif;font-style:italic;font-size:clamp(1rem,2vw,1.5rem);color:var(--muted);max-width:600px;line-height:1.6;margin-top:20px;position:relative;z-index:1;}
+.cs-meta{display:flex;gap:48px;margin-top:48px;padding-top:32px;border-top:1px solid var(--border);flex-wrap:wrap;position:relative;z-index:1;}
+.cs-meta-label{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.cs-meta-value{font-family:'Instrument Serif',serif;font-size:1rem;color:var(--cream);}
+
+/* IMAGE — the key fix: just a clean container, image fills it fully */
+.cs-img{
+  width:100%;
+  border-radius:10px;
+  border:1px solid var(--border);
+  overflow:hidden;
+  background:var(--surface2);
+  display:block;
+  line-height:0;
+  box-shadow:0 8px 40px rgba(0,0,0,0.5), 0 0 0 0 rgba(200,169,110,0);
+  transition:box-shadow .35s ease, transform .35s ease;
+}
+.cs-img:hover{
+  box-shadow:0 16px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(200,169,110,0.25);
+  transform:translateY(-4px);
+}
+.cs-img img{
+  width:100%;
+  height:auto;
+  display:block;
+}
+
+/* CONTENT */
+.cs-body{max-width:900px;margin:0 auto;padding:80px 48px;}
+.cs-section{margin-bottom:80px;}
+.cs-section-tag{font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.cs-section-tag::before{content:'';width:24px;height:1px;background:var(--gold)}
+.cs-h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,7rem);line-height:.9;color:var(--cream);letter-spacing:-1px;margin-bottom:28px;}
+.cs-h2 em{color:var(--gold);font-style:normal}
+.cs-p{font-size:.95rem;color:var(--muted);line-height:1.9;margin-bottom:16px;}
+.cs-p strong{color:var(--cream);font-weight:500}
+
+/* INSIGHT CARDS */
+.cs-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:32px;}
+.cs-card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:28px;transition:border-color .2s,transform .2s;}
+.cs-card:hover{border-color:rgba(200,169,110,.4);transform:translateY(-4px)}
+.cs-card-num{font-family:'Bebas Neue',sans-serif;font-size:3rem;color:rgba(200,169,110,.15);line-height:1;margin-bottom:8px;}
+.cs-card-title{font-family:'Instrument Serif',serif;font-size:1rem;color:var(--cream);margin-bottom:8px;}
+.cs-card-text{font-size:.78rem;color:var(--muted);line-height:1.7;}
+
+/* PROCESS STEPS */
+.cs-process{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--border);border:1px solid var(--border);margin-top:32px;}
+.cs-step{background:var(--bg);padding:28px 24px;position:relative;overflow:hidden;transition:background .3s;}
+.cs-step:hover{background:var(--surface)}
+.cs-step-num{font-family:'Bebas Neue',sans-serif;font-size:5rem;color:rgba(200,169,110,.05);position:absolute;bottom:-10px;right:8px;line-height:1;pointer-events:none;}
+.cs-step-icon{font-size:1.5rem;margin-bottom:12px;display:block;}
+.cs-step-title{font-family:'Instrument Serif',serif;font-size:.95rem;color:var(--cream);margin-bottom:8px;}
+.cs-step-text{font-size:.75rem;color:var(--muted);line-height:1.7;}
+
+/* TWO COL */
+.cs-two{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:32px 0;align-items:start;}
+
+/* OUTCOME STATS */
+.cs-outcomes{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);border:1px solid var(--border);margin-top:32px;}
+.cs-outcome{background:var(--surface);padding:36px 28px;text-align:center;}
+.cs-outcome-num{font-family:'Bebas Neue',sans-serif;font-size:4rem;color:var(--gold);line-height:1;display:block;}
+.cs-outcome-label{font-size:.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;margin-top:8px;display:block;}
+
+/* QUOTE */
+.cs-quote{border-left:2px solid var(--gold);padding:24px 32px;margin:40px 0;background:var(--surface);border-radius:0 4px 4px 0;}
+.cs-quote p{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.2rem;color:var(--cream);line-height:1.7;}
+.cs-quote cite{display:block;margin-top:12px;font-size:.75rem;color:var(--muted);font-style:normal;font-family:'DM Mono',monospace;letter-spacing:1px;}
+
+/* LEARNING */
+.cs-learnings{display:flex;flex-direction:column;gap:16px;margin-top:28px;}
+.cs-learning{display:flex;align-items:flex-start;gap:16px;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:4px;}
+.cs-learning-icon{font-size:1.2rem;flex-shrink:0;margin-top:2px;}
+.cs-learning-text{font-size:.85rem;color:var(--muted);line-height:1.7;}
+.cs-learning-text strong{color:var(--cream);font-weight:500}
+
+/* FOOTER / CTA */
+.cs-footer{border-top:1px solid var(--border);padding:60px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px;}
+.cs-footer-text{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.1rem;color:var(--muted);}
+.cs-footer-text strong{color:var(--cream);font-style:normal}
+.cs-footer-btns{display:flex;gap:12px;flex-wrap:wrap;}
+.cbtn{padding:12px 28px;border-radius:4px;font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:transform .2s,box-shadow .2s;display:inline-flex;align-items:center;gap:8px;}
+.cbtn:hover{transform:translateY(-2px)}
+.cbtn-gold{background:var(--gold);color:var(--bg);}
+.cbtn-gold:hover{box-shadow:0 10px 30px rgba(200,169,110,.3)}
+.cbtn-ghost{border:1px solid var(--border);color:var(--gold);}
+.cbtn-ghost:hover{border-color:var(--gold)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.on{opacity:1;transform:translateY(0)}
+
+/* MOBILE */
+@media(max-width:768px){
+  nav{padding:18px 24px}
+  .cs-hero{padding:100px 24px 60px}
+  .cs-body{padding:60px 24px}
+  .cs-cards{grid-template-columns:1fr}
+  .cs-process{grid-template-columns:1fr 1fr}
+  .cs-two{grid-template-columns:1fr}
+  .cs-outcomes{grid-template-columns:1fr}
+  .cs-footer{padding:40px 24px;flex-direction:column;align-items:flex-start}
+  body{cursor:auto}.cur,.cur-ring{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="cur" id="cur"></div>
+<div class="cur-ring" id="curRing"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">TD.</a>
+  <a href="index.html?panel=2" class="nav-back">Back to Portfolio</a>
+</nav>
+
+<div class="cs-hero">
+  <div class="cs-hero-bg" aria-hidden="true">LEMON</div>
+  <span class="cs-tag">Case Study · 01</span>
+  <h1 class="cs-title">Little<br><em>Lemon.</em></h1>
+  <p class="cs-subtitle">A full restaurant table-booking UX — from research and wireframes to a high-fidelity Figma prototype. Meta UI/UX Certificate capstone project.</p>
+  <div class="cs-meta">
+    <div class="cs-meta-item">
+      <p class="cs-meta-label">Role</p>
+      <p class="cs-meta-value">UI/UX Designer (Solo)</p>
+    </div>
+    <div class="cs-meta-item">
+      <p class="cs-meta-label">Tools</p>
+      <p class="cs-meta-value">Figma</p>
+    </div>
+    <div class="cs-meta-item">
+      <p class="cs-meta-label">Type</p>
+      <p class="cs-meta-value">Capstone Project</p>
+    </div>
+    <div class="cs-meta-item">
+      <p class="cs-meta-label">Backed by</p>
+      <p class="cs-meta-value">Meta Professional Certificate</p>
+    </div>
+  </div>
+</div>
+
+<div class="cs-body">
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       IMAGE 1 — Hero / cover screenshot
+       File name: lemon-cover.png
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <div class="cs-img reveal" style="margin-bottom:80px;">
+    <img src="lemon-cover.png" alt="Little Lemon cover">
+  </div>
+
+  <!-- THE PROBLEM -->
+  <div class="cs-section reveal">
+    <span class="cs-section-tag">01 — The Problem</span>
+    <h2 class="cs-h2">What needed<br><em>solving?</em></h2>
+    <p class="cs-p">Little Lemon is a family-owned Mediterranean restaurant that needed a <strong>digital table booking experience</strong>. Their existing process was entirely phone-based — customers had to call during business hours, wait on hold, and often couldn't get through at all.</p>
+    <p class="cs-p">The goal was to design a simple, trustworthy booking flow that worked for <strong>all types of diners</strong> — from young tech-savvy users to older customers less comfortable with apps.</p>
+    <div class="cs-quote">
+      <p>"Users need a way to book a table at Little Lemon quickly and confidently, without having to call during busy hours."</p>
+      <cite>— Problem Statement</cite>
+    </div>
+  </div>
+
+  <!-- RESEARCH -->
+  <div class="cs-section reveal">
+    <span class="cs-section-tag">02 — Research</span>
+    <h2 class="cs-h2">Who are the<br><em>users?</em></h2>
+    <p class="cs-p">I conducted user research to understand what diners actually need when booking a restaurant online. The key insight was that <strong>trust and simplicity</strong> matter more than features — people want to book fast and feel confident the reservation is confirmed.</p>
+    <div class="cs-cards">
+      <div class="cs-card">
+        <div class="cs-card-num">01</div>
+        <h4 class="cs-card-title">The Busy Professional</h4>
+        <p class="cs-card-text">Books on mobile during lunch breaks. Wants a fast flow — less than 5 taps to confirm. Hates unnecessary steps.</p>
+      </div>
+      <div class="cs-card">
+        <div class="cs-card-num">02</div>
+        <h4 class="cs-card-title">The Family Planner</h4>
+        <p class="cs-card-text">Plans ahead for special occasions. Needs to specify party size and dietary needs. Values clear confirmation.</p>
+      </div>
+      <div class="cs-card">
+        <div class="cs-card-num">03</div>
+        <h4 class="cs-card-title">The First Timer</h4>
+        <p class="cs-card-text">Never booked online before. Needs reassurance at every step. Big "Book Now" button, simple language, instant feedback.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROCESS -->
+  <div class="cs-section reveal">
+    <span class="cs-section-tag">03 — Design Process</span>
+    <h2 class="cs-h2">How I<br><em>worked.</em></h2>
+    <p class="cs-p">I followed the full UX design process — from rough sketches to a tested, high-fidelity prototype. Every decision was backed by what I learned from the research phase.</p>
+    <div class="cs-process">
+      <div class="cs-step">
+        <span class="cs-step-num">01</span>
+        <span class="cs-step-icon">🔍</span>
+        <h4 class="cs-step-title">Empathise</h4>
+        <p class="cs-step-text">User interviews, competitive analysis of AB's & Zomato, defining pain points in existing booking flows.</p>
+      </div>
+      <div class="cs-step">
+        <span class="cs-step-num">02</span>
+        <span class="cs-step-icon">✏️</span>
+        <h4 class="cs-step-title">Define & Ideate</h4>
+        <p class="cs-step-text">Problem statements, user journey maps, paper wireframes exploring different booking flows.</p>
+      </div>
+      <div class="cs-step">
+        <span class="cs-step-num">03</span>
+        <span class="cs-step-icon">🎨</span>
+        <h4 class="cs-step-title">Design</h4>
+        <p class="cs-step-text">Digital wireframes in Figma, then high-fidelity screens with the Little Lemon brand — yellow, green, clean typography.</p>
+      </div>
+      <div class="cs-step">
+        <span class="cs-step-num">04</span>
+        <span class="cs-step-icon">🧪</span>
+        <h4 class="cs-step-title">Test & Refine</h4>
+        <p class="cs-step-text">Usability testing with 5 participants. Iterated on the date picker, confirmation screen, and form labels based on feedback.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- WIREFRAMES -->
+  <div class="cs-section reveal">
+    <span class="cs-section-tag">04 — Wireframes</span>
+    <h2 class="cs-h2">From rough<br><em>to real.</em></h2>
+    <p class="cs-p">I started with paper sketches to explore layouts quickly, then moved to low-fidelity digital wireframes in Figma to test the core booking flow before adding any visual design.</p>
+
+    <div class="cs-two">
+
+      <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+           IMAGE 2 — Paper / Lo-fi wireframe sketch
+           File name: lemon-wireframe-lo.png
+      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+      <div class="cs-img">
+        <img src="lemon-wireframe-lo.jpeg" alt="Lo-fi wireframe">
+      </div>
+
+      <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+           IMAGE 3 — Digital Figma wireframe
+           File name: lemon-wireframe-hi.png
+      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+      <div class="cs-img">
+        <img src="lemon-wireframe-hi.png" alt="Hi-fi wireframe">
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FINAL DESIGN -->
+  <div class="cs-section reveal">
+    <span class="cs-section-tag">05 — Final Design</span>
+    <h2 class="cs-h2">The final<br><em>screens.</em></h2>
+    <p class="cs-p">The final prototype covers the complete booking journey — from the landing page to the confirmation screen. Key design decisions included a <strong>sticky date picker</strong>, <strong>clear progress indicators</strong>, and an <strong>instant confirmation card</strong> that users could screenshot.</p>
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+         IMAGE 4 — All screens mockup / full overview
+         File name: lemon-final.png
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <div class="cs-img" style="margin-bottom:24px;">
+      <img src="lemon-final.png" alt="Final design all screens">
+    </div>
+
+    <div class="cs-two">
+
+      <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+           IMAGE 5 — Booking screen (mobile)
+           File name: lemon-booking.png
+      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+      <div class="cs-img">
+        <img src="lemon-booking.png" alt="Booking screen">
+      </div>
+
+      <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+           IMAGE 6 — Confirmation screen (mobile)
+           File name: lemon-confirm.png
+      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+      <div class="cs-img">
+        <img src="lemon-confirm.png" alt="Confirmation screen">
+      </div>
+
+    </div>
+  </div>
+
+  <!-- OUTCOMES -->
+  <div class="cs-section reveal">
+    <span class="cs-section-tag">06 — Results</span>
+    <h2 class="cs-h2">What I<br><em>achieved.</em></h2>
+    <p class="cs-p">After usability testing and iterating, the final prototype tested well across all three user personas. The biggest win was reducing the booking flow to <strong>4 simple steps</strong> — date, time, party size, confirm.</p>
+    <div class="cs-outcomes">
+      <div class="cs-outcome">
+        <span class="cs-outcome-num">4</span>
+        <span class="cs-outcome-label">Steps to complete booking</span>
+      </div>
+      <div class="cs-outcome">
+        <span class="cs-outcome-num">5</span>
+        <span class="cs-outcome-label">Usability test participants</span>
+      </div>
+      <div class="cs-outcome">
+        <span class="cs-outcome-num">100%</span>
+        <span class="cs-outcome-label">Task completion rate</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEARNINGS -->
+  <div class="cs-section reveal">
+    <span class="cs-section-tag">07 — What I Learned</span>
+    <h2 class="cs-h2">Key<br><em>takeaways.</em></h2>
+    <div class="cs-learnings">
+      <div class="cs-learning">
+        <span class="cs-learning-icon">💡</span>
+        <p class="cs-learning-text"><strong>Research first, design second.</strong> The user interviews completely changed my first design idea. The phone-call pain point I discovered shaped the entire project direction.</p>
+      </div>
+      <div class="cs-learning">
+        <span class="cs-learning-icon">🔄</span>
+        <p class="cs-learning-text"><strong>Iteration is the real design process.</strong> My first wireframe looked nothing like the final design. Every test session revealed something I hadn't considered.</p>
+      </div>
+      <div class="cs-learning">
+        <span class="cs-learning-icon">✅</span>
+        <p class="cs-learning-text"><strong>Confirmation matters more than I thought.</strong> Every test user mentioned the confirmation screen first when asked what they liked. People need to feel sure their booking went through.</p>
+      </div>
+      <div class="cs-learning">
+        <span class="cs-learning-icon">🎯</span>
+        <p class="cs-learning-text"><strong>Simple beats clever.</strong> I originally designed a fancy animated date picker. Users found it confusing. A basic calendar was 10× more intuitive.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="cs-footer reveal">
+  <div class="cs-footer-text">
+    <p>Want to see the full prototype?</p>
+    <p><strong>Open it in Figma →</strong></p>
+  </div>
+  <div class="cs-footer-btns">
+    <a href="https://www.figma.com/design/lqA9joKb2d3XWWFJxHM4Cr/little-lemon-website--Tapan-?t=Y4o7SajZacnXgFr0-1" target="_blank" class="cbtn cbtn-gold">View Figma Prototype →</a>
+    <a href="index.html?panel=2" class="cbtn cbtn-ghost">← Back to Portfolio</a>
+  </div>
+</div>
+
+<script>
+const cur=document.getElementById('cur'),ring=document.getElementById('curRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function loop(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.transform='translate(-50%,-50%) scale(2.5)';ring.style.borderColor='rgba(200,169,110,1)';});
+  el.addEventListener('mouseleave',()=>{cur.style.transform='translate(-50%,-50%) scale(1)';ring.style.borderColor='rgba(200,169,110,.55)';});
+});
+const obs=new IntersectionObserver(entries=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('on'),i*60);obs.unobserve(e.target);}});},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
